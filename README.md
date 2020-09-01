@@ -1,6 +1,8 @@
 # Tetris
 Tetris written by c++ language.
 
+### Main Logie Code : [Tetris.h](https://github.com/wlsvy/Tetris/blob/master/Tetris/Tetris.hpp), [Tetris.cpp](https://github.com/wlsvy/Tetris/blob/master/Tetris/Tetris.cpp)
+
 ![](https://github.com/wlsvy/Tetris/blob/master/sample.gif)
 
 ## Dependencies
