@@ -13,37 +13,35 @@ namespace Tetris {
 		Right
 	};
 
-	struct Cell {
-		uint y = 0, x = 0;
-	};
-	struct Block {
-		bool Contain(uint y, uint x);
-		void Clear();
-
-		uint OffsetX = 0;
-		uint OffsetY = 0;
-		uint RotateSquareSize;
-		std::vector<Cell> Cells;
-	};
-
 	class Game {
 	public:
-		Game();
-		~Game();
-
-		void Update();
-		void ClearFullLineAndCompact();
-		void ResetGame();
+		void OnUpdate();
 		void OnInput(KeyInput input);
 		void OnDraw();
-		bool CreateFallingBlock();
-		bool IsValidPos(uint y, uint x);
-		bool MoveBlock(int y, int x);
-		bool Rotate();
 
 	private:
+		void ClearFullLineAndCompact();
+		void ResetGame();
+		bool IsValidPos(uint y, uint x);
+		bool MoveBlock(int y, int x);
+		bool RotateBlock();
+		bool CreateFallingBlock();
+
+		struct Cell {
+			uint y = 0, x = 0;
+		};
+		struct Block {
+			bool IsOccupied(uint y, uint x);
+			void Clear();
+
+			std::vector<Cell> Cells;
+			uint OffsetX = 0;
+			uint OffsetY = 0;
+			uint RotateSquareSize;
+		};
+
 		bool m_IsGameOver = false;
-		std::vector<std::vector<bool>> m_Board;
+		std::vector<std::vector<bool>> m_Board = std::vector<std::vector<bool>>(BOARD_HEIGHT, std::vector<bool>(BOARD_WIDTH, false));
 		Block m_CurrentFallingBlock;
 	};
 }

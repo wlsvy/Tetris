@@ -1,7 +1,5 @@
 #include "Tetris.hpp"
 #include "Imgui/imgui.h"
-#include <Windows.h>
-#include <iostream>
 #include <algorithm>
 
 using namespace std;
@@ -12,7 +10,7 @@ namespace Tetris {
 	const ImVec4 EmptyCellColor = (ImVec4)ImColor(1.0f, 1.0f, 1.0f, 0.2f);
 	const ImVec4 FilledCellColor = (ImVec4)ImColor::HSV(0.1f, 0.6f, 0.6f);
 
-	bool Block::Contain(uint y, uint x)
+	bool Game::Block::IsOccupied(uint y, uint x)
 	{
 		for (auto& c : Cells) {
 			auto ny = OffsetY + c.y;
@@ -21,20 +19,15 @@ namespace Tetris {
 		}
 		return false;
 	}
-	void Block::Clear()
+	void Game::Block::Clear()
 	{
 		Cells.clear();
 		OffsetY = 0;
 		OffsetX = 0;
 	}
 
-	Game::Game() : m_Board(BOARD_HEIGHT, vector<bool>(BOARD_WIDTH, false))
-	{
-	}
-	Game::~Game()
-	{
-	}
-	void Game::Update()
+	//Update on every 1 second
+	void Game::OnUpdate()
 	{
 		if (m_IsGameOver) return;
 
@@ -78,20 +71,15 @@ namespace Tetris {
 		if (m_IsGameOver) return;
 
 		switch (input) {
-		case KeyInput::Left: MoveBlock(0, -1); cout << "Left\n";  break;
-		case KeyInput::Right: MoveBlock(0, 1);  cout << "Right\n"; break;
-		case KeyInput::Down: MoveBlock(1, 0);  cout << "Down\n"; break;
-		case KeyInput::Up: Rotate(); cout << "Up\n"; break;
+		case KeyInput::Left: MoveBlock(0, -1); break;
+		case KeyInput::Right: MoveBlock(0, 1); break;
+		case KeyInput::Down: MoveBlock(1, 0); break;
+		case KeyInput::Up: RotateBlock(); break;
 		}
 	}
 	void Game::OnDraw()
 	{
 		ImGui::Text("Current Falling Block Offest y : %u, x : %u", m_CurrentFallingBlock.OffsetY, m_CurrentFallingBlock.OffsetX);
-		for (auto& c : m_CurrentFallingBlock.Cells) {
-			ImGui::Text("( %u, %u ) ", c.y, c.x);
-			ImGui::SameLine();
-		}
-		ImGui::Text(" ");
 
 		if (m_IsGameOver && ImGui::Button("GameOver!!!     Reset??")) {
 			ResetGame();
@@ -99,7 +87,7 @@ namespace Tetris {
 
 		for (uint y = 0; y < BOARD_HEIGHT; y++) {
 			for (uint x = 0; x < BOARD_WIDTH; x++) {
-				auto cellColor = (m_Board[y][x] | m_CurrentFallingBlock.Contain(y, x)) ? FilledCellColor : EmptyCellColor;
+				auto cellColor = (m_Board[y][x] | m_CurrentFallingBlock.IsOccupied(y, x)) ? FilledCellColor : EmptyCellColor;
 
 				ImGui::PushID(y * BOARD_WIDTH + x);
 				ImGui::PushStyleColor(ImGuiCol_Button, cellColor);
@@ -123,13 +111,13 @@ namespace Tetris {
 		//uint index = 0;
 		switch (index)
 		{
-		case 0: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 0}, {1, 1} }; m_CurrentFallingBlock.RotateSquareSize = 2; break; // 사각형
+		case 0: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 0}, {1, 1} }; m_CurrentFallingBlock.RotateSquareSize = 2; break; // O
 		case 1: m_CurrentFallingBlock.Cells = { {0, 1}, {1, 1}, { 2, 1}, {3, 1} }; m_CurrentFallingBlock.RotateSquareSize = 4; break; // I
-		case 2: m_CurrentFallingBlock.Cells = { {0, 0}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // L
-		case 3: m_CurrentFallingBlock.Cells = { {0, 2}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // L - Reverse
-		case 4: m_CurrentFallingBlock.Cells = { {0, 1}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // ㅗ
-		case 5: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // 번개
-		case 6: m_CurrentFallingBlock.Cells = { {1, 0}, {1, 1}, { 0, 1}, {0, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // 번개 - Reverse
+		case 2: m_CurrentFallingBlock.Cells = { {0, 0}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // J
+		case 3: m_CurrentFallingBlock.Cells = { {0, 2}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // L
+		case 4: m_CurrentFallingBlock.Cells = { {0, 1}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // T
+		case 5: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // Z
+		case 6: m_CurrentFallingBlock.Cells = { {1, 0}, {1, 1}, { 0, 1}, {0, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // S
 		}
 
 		for (auto& c : m_CurrentFallingBlock.Cells) {
@@ -156,7 +144,7 @@ namespace Tetris {
 		return true;
 	}
 	
-	bool Game::Rotate()
+	bool Game::RotateBlock()
 	{
 		for (auto& c : m_CurrentFallingBlock.Cells) {
 			auto ny = m_CurrentFallingBlock.OffsetY + c.x;

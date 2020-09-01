@@ -85,7 +85,7 @@ int main() {
         static float ElapsedTime = 0.0f;
         ElapsedTime += 1.0f / ImGui::GetIO().Framerate;
         if (ElapsedTime > 1.0f) {
-            g_Game.Update();
+            g_Game.OnUpdate();
             ElapsedTime = 0.0f;
         }
        
