@@ -29,8 +29,6 @@ namespace Tetris {
 	//Update on every 1 second
 	void Game::OnUpdate()
 	{
-		//Update on every 1 second
-		
 		if (m_IsGameOver) return;
 
 		if (m_CurrentFallingBlock.Cells.empty()) {
