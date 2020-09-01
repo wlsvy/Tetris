@@ -36,6 +36,8 @@ namespace Tetris {
 	}
 	void Game::Update()
 	{
+		//Update on every 1 second
+		
 		if (m_IsGameOver) return;
 
 		if (m_CurrentFallingBlock.Cells.empty()) {
@@ -123,13 +125,13 @@ namespace Tetris {
 		//uint index = 0;
 		switch (index)
 		{
-		case 0: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 0}, {1, 1} }; m_CurrentFallingBlock.RotateSquareSize = 2; break; // 사각형
+		case 0: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 0}, {1, 1} }; m_CurrentFallingBlock.RotateSquareSize = 2; break; // O
 		case 1: m_CurrentFallingBlock.Cells = { {0, 1}, {1, 1}, { 2, 1}, {3, 1} }; m_CurrentFallingBlock.RotateSquareSize = 4; break; // I
-		case 2: m_CurrentFallingBlock.Cells = { {0, 0}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // L
-		case 3: m_CurrentFallingBlock.Cells = { {0, 2}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // L - Reverse
-		case 4: m_CurrentFallingBlock.Cells = { {0, 1}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // ㅗ
-		case 5: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // 번개
-		case 6: m_CurrentFallingBlock.Cells = { {1, 0}, {1, 1}, { 0, 1}, {0, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // 번개 - Reverse
+		case 2: m_CurrentFallingBlock.Cells = { {0, 0}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // J
+		case 3: m_CurrentFallingBlock.Cells = { {0, 2}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // L
+		case 4: m_CurrentFallingBlock.Cells = { {0, 1}, {1, 0}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // T
+		case 5: m_CurrentFallingBlock.Cells = { {0, 0}, {0, 1}, { 1, 1}, {1, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // Z
+		case 6: m_CurrentFallingBlock.Cells = { {1, 0}, {1, 1}, { 0, 1}, {0, 2} }; m_CurrentFallingBlock.RotateSquareSize = 3; break; // S
 		}
 
 		for (auto& c : m_CurrentFallingBlock.Cells) {
