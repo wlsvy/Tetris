@@ -82,11 +82,9 @@ namespace Tetris {
 	void Game::OnDraw()
 	{
 		ImGui::Text("Current Falling Block Offest y : %u, x : %u", m_CurrentFallingBlock.OffsetY, m_CurrentFallingBlock.OffsetX);
-
 		if (m_IsGameOver && ImGui::Button("GameOver!!!     Reset??")) {
 			ResetGame();
 		}
-
 		for (uint y = 0; y < BOARD_HEIGHT; y++) {
 			for (uint x = 0; x < BOARD_WIDTH; x++) {
 				auto cellColor = (m_Board[y][x] | m_CurrentFallingBlock.IsOccupied(y, x)) ? FilledCellColor : EmptyCellColor;
@@ -102,7 +100,6 @@ namespace Tetris {
 				if (x != BOARD_WIDTH - 1) ImGui::SameLine();
 			}
 		}
-
 	}
 	bool Game::CreateFallingBlock()
 	{

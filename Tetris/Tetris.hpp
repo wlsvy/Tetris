@@ -28,7 +28,8 @@ namespace Tetris {
 		bool CreateFallingBlock();
 
 		struct Cell {
-			uint y = 0, x = 0;
+			uint y = 0;
+			uint x = 0;
 		};
 		struct Block {
 			bool IsOccupied(uint y, uint x);
